@@ -1,0 +1,142 @@
+
+{% load get_banner %}
+{% block content %}
+<style>
+ .kapsecLogin fieldset{
+background-color: #ffffff !important;
+padding: 40px 25px !important;
+text-align: center !important;
+width: 25% !important;
+margin: auto !important;
+box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23) !important;
+}
+.kapsecLogin .form-group > label{
+float: left !important;
+color: #2e363f !important;
+}
+.kapsecLogin .form-group .col-sm-10{
+margin-bottom: 15px !important;
+}
+.kapsecLogin .form-group .btn-success{
+color: #fff !important;
+background-color: #17a2b8 !important;
+border-color: #17a2b8 !important;
+width: 100% !important;
+height: 32px !important;
+border: none !important;
+font-size: 16px !important;
+}
+.kapsecLogin .form-group input{
+  display: block !important;
+    width: 100% !important;
+    padding: .375rem .75rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    color: #495057 !important;
+    background-color: #fff !important;
+    background-clip: padding-box !important;
+    border: 1px solid #ced4da !important;
+    border-radius: .25rem !important;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+    height: 32px !important;
+}
+</style>
+    <body style="background-color: #2e363f;padding: 30px;">
+
+    <form class="form-horizontal kapsecLogin" method="POST"> {% csrf_token %}
+        <fieldset class="col-md-offset-3 col-md-6">
+          <h3 style="text-align: center; margin-top: -24px;">
+            <img src="/static/dojo/img/logo1.png" style="max-width:210px; margin-top: 10px;" alt="">
+          </h3>
+            {% if "banner_enable"|get_banner %}
+                <div class="well">
+                {{ "banner_message"|get_banner }}
+                </div>
+            {% endif %}
+            {% include "dojo/form_fields.html" with form=form %}
+            <!-- Button -->
+            <div class="form-group">
+              <!--
+                <div class="col-sm-offset-1 col-sm-4" id="toggleBox" onclick="togglePassVisibility()">
+                    <i class="fa fa-eye"></i>
+                    <span><b>Show Password</b></span>
+                </div>-->
+                {% if CLASSIC_AUTH_ENABLED %}
+                    <div class="col-sm-offset-1 col-sm-1">
+                        <button class="btn btn-success">Log In</button>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {% if GOOGLE_ENABLED is True %}
+                    <div class="col-sm-offset-1 col-sm-2">
+                        <button class="btn btn-success" type="button">
+                            <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}" style="color: rgb(255,255,255)">Login with Google</a>
+                        </button>
+                    </div>
+                {% endif %}
+
+                {% if OKTA_ENABLED is True %}
+                    <div class="col-sm-offset-1 col-sm-2">
+                        <button class="btn btn-success" type="button">
+                            <a href="{% url 'social:begin' 'okta-oauth2' %}?next={{ request.GET.next }}" style="color: rgb(255,255,255)">Login with OKTA</a>
+                        </button>
+                    </div>
+                {% endif %}
+
+                {% if AZUREAD_TENANT_OAUTH2_ENABLED is True %}
+                    <div class="col-sm-offset-1 col-sm-2">
+                        <button class="btn btn-success" type="button">
+                            <a href="{% url 'social:begin' 'azuread-tenant-oauth2' %}?next={{ request.GET.next }}" style="color: rgb(255,255,255)">Login with Azure AD</a>
+                        </button>
+                    </div>
+                {% endif %}
+
+                {% if GITLAB_ENABLED is True %}
+                    <div class="col-sm-offset-1 col-sm-2">
+                        <button class="btn btn-success" type="button">
+                            <a href="{% url 'social:begin' 'gitlab' %}?next={{ request.GET.next }}" style="color: rgb(255,255,255)">Login with Gitlab</a>
+                        </button>
+                    </div>
+                {% endif %}
+
+                {% if AUTH0_ENABLED is True %}
+                    <div class="col-sm-offset-1 col-sm-2">
+                        <button class="btn btn-success" type="button">
+                            <a href="{% url 'social:begin' 'auth0' %}?next={{ request.GET.next }}" style="color: rgb(255,255,255)">Login with Auth0</a>
+                        </button>
+                    </div>
+                {% endif %}
+
+                {% if SAML2_ENABLED is True %}
+                    <div class="col-sm-offset-1 col-sm-2">
+                        <button class="btn btn-success" type="button">
+                            <a href="/saml2/login" style="color: rgb(255,255,255)">Login with SAML</a>
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </fieldset>
+    </form>
+
+    <script>
+      function togglePassVisibility() {
+          var passwdInput = document.getElementById("id_password");
+          var toggleBox = document.getElementById("toggleBox");
+
+          // swap password
+          if (passwdInput.type === "password") {
+              passwdInput.type = "text";
+              toggleBox.innerHTML = "<i class='fa fa-eye-slash'></i>\
+              <span><b>Hide Password</b></span>";
+          } else {
+              passwdInput.type = "password";
+              toggleBox.innerHTML = "<i class='fa fa-eye'></i>\
+              <span><b>Show Password</b></span>";
+          }
+      }
+
+    </script>
+</body>
+
+{% endblock %}

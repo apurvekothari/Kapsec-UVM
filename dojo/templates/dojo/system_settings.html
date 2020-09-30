@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block add_css %}
+    <link rel="stylesheet" href="{% static "chosen-bootstrap/chosen.bootstrap.min.css" %}">
+{% endblock %}
+{% block add_styles %}
+.chosen-container {
+    width: 70% !important;
+}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <h3> System Status </h3>
+    <br>
+   <div id="test-strategy" class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {% if celery_bool %}
+                        <h4> Celery <span class="label label-success">{{celery_status}}</span> </h4>
+                        {% else %}
+                        <h4> Celery <span class="label label-danger">{{celery_status}}</span> </h4>
+                        {% endif %}
+                    </div>
+                    <div class="panel-body text-left">
+                        {{celery_msg}}
+                    </div>
+                </div>
+            </div>
+</div>
+<hr>
+    <div class="row">
+    <h3> System Settings </h3>
+   <form class="form-horizontal" method="post">{% csrf_token %}
+        {% include "dojo/form_fields.html" with form=form %}
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input class="btn btn-primary" type="submit" name="edit_settings" value="Submit"/>
+            </div>
+        </div>
+    </form>
+    </div>
+{% endblock %}
+{% block postscript %}
+    <script>
+        function updatenotificationsgroup(group) {
+           if ($('#id_enable_' + group + "_notifications").is(':checked')) {
+                $("[id^='id_" + group + "']").closest('.form-group').show();
+            } else {
+                $("[id^='id_" + group + "']").closest('.form-group').hide();
+            }
+        }
+
+        $(function () {
+            $.each(['slack','hipchat','mail', 'grade'], function (index, value) {
+                updatenotificationsgroup(value);
+                $('#id_enable_' + value + '_notifications').change(function() { updatenotificationsgroup(value)});
+            });
+        });
+
+    </script>
+{% endblock %}

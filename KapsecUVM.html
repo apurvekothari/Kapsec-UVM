@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://localhost:8080/dashboard -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>
+        
+        KapsecUVM
+    </title>
+    
+
+    
+    <!-- Bootstrap Core CSS -->
+    <link href="./KapsecUVM_files/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="./KapsecUVM_files/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="./KapsecUVM_files/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="./KapsecUVM_files/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+     
+     
+     <link rel="stylesheet" href="./KapsecUVM_files/jquery-ui.min.css">
+     <!--<link rel="shortcut icon" href="/static/dojo/img/favicon.ico"/>-->
+     <link rel="stylesheet" href="./KapsecUVM_files/chosen.bootstrap.min.css">
+    <link rel="stylesheet" href="./KapsecUVM_files/fullcalendar.min.css">
+     <link rel="stylesheet" href="./KapsecUVM_files/dojo.css">
+     <link rel="stylesheet" href="./KapsecUVM_files/datatables.min.css">
+
+
+     <style>
+         
+    .graph {height: 51vh; width: 100%;}
+    .chart {height: 300px}
+    .status .panel {min-height: 140px}
+    #punchcard {height: 350px}
+
+     </style>
+</head>
+ <body class="max" style="background-color:#292926">&gt;
+
+  <div id="wrapper" style="margin-bottom:0;background:#141414;color:#ffffff">
+      
+          <!-- Navigation -->
+          <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="background:#141414;color:#ffffff">
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="http://localhost:8080/">
+                      <img src="./KapsecUVM_files/logo.png" alt="Kapsec Logo" style="width:210px;height:40px;">
+                  </a>
+              </div>
+              <!-- /.navbar-header -->
+
+              <ul class="nav navbar-top-links navbar-right" style="background:#141414;color:#ffffff">
+                
+                  <li>
+                      <div class="custom-search-form">
+                          <form role="search" method="get" action="http://localhost:8080/simple_search">
+                              <div class="input-group">
+                                  <input id="simple_search" type="text" name="query" class="form-control" placeholder="Search...">
+                                  <span class="input-group-btn">
+                                      <button class="btn btn-primary" type="submit" aria-label="Search">
+                                          <i class="fa fa-search"></i>
+                                      </button>
+                                  </span>
+                              </div>
+                          </form>
+                      </div>
+                      <!-- /input-group -->
+                  </li>
+                  <li class="dropdown">
+                      <a class="dropdown-toggle dropdown-toggle-h24" data-toggle="dropdown" href="http://localhost:8080/dashboard#" aria-expanded="false" aria-label="24 Alerts">
+                          <i class="fa fa-bell fa-fw"></i>
+                          <span id="alert_count" class="badge badge-count badge-count24">24</span>
+                          <i class="fa fa-caret-down"></i>
+                      </a>
+                      <ul class="dropdown-menu dropdown-alerts">
+                      </ul>
+                      <!-- /.dropdown-alerts -->
+                  </li>
+                  
+                  <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="http://localhost:8080/dashboard#" aria-expanded="false" aria-label="User Menu">
+                          <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                      </a>
+                      <ul class="dropdown-menu dropdown-user">
+                          
+                              
+                                  <li><a href="http://localhost:8080/profile"><i class="fa fa-user fa-fw"></i> admin</a>
+                                  </li>
+                                  <li><a href="http://localhost:8080/api/key"><i class="fa fa-fw fa-key"></i> API v1 Key</a></li>
+                                  <li><a href="http://localhost:8080/api/key-v2"><i class="fa fa-fw fa-key"></i> API v2 Key</a></li>
+                              
+                              <li><a href="http://localhost:8080/api/v1/doc/"><i class="fa fa-book fa-fw"></i> API
+                                  v1 Docs</a></li>
+                              <li><a href="http://localhost:8080/api/v2/doc/"><i class="fa fa-book fa-fw"></i> API
+                                  v2 Docs</a></li>
+                          
+                          
+                              <li><a href="http://localhost:8080/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+                          
+                      </ul>
+                      <!-- /.dropdown-user -->
+                  </li>
+                  <!-- /.dropdown -->
+              </ul>
+              <!-- /.navbar-top-links -->
+
+              <div class="navbar-default sidebar navbar-fixed-top" role="navigation" style="background:#141414;color:#ffffff;height:100%">
+                  <div class="sidebar-nav navbar-collapse">
+                      <ul class="nav metismenu in" id="side-menu">
+                          
+
+                              
+                                  <li>
+                                      <a href="http://localhost:8080/dashboard" aria-disabled="true" aria-expanded="false" aria-label="Dashboard" class="active" style="background:#141414;">
+                                          <i class="fa fa-dashboard fa-fw"></i>
+                                          <span>Dashboard</span>
+                                      </a>
+                                  </li>
+                              
+                              <li>
+                                  
+                                      <a href="http://localhost:8080/dashboard#" aria-expanded="false" aria-label="Products" style="color:#0489c5;">
+                                          <i class="fa fa-list fa-fw"></i>
+                                          <span>Products</span>
+                                          <span class="glyphicon arrow"></span>
+                                      </a>
+                                  
+                                  
+                                      <ul class="nav nav-second-level mm-collapse" style="background:#141414;">
+                                        
+                                          <li>
+                                              <a href="http://localhost:8080/product/add"> Add Product</a>
+                                          </li>
+                                        
+                                          <li>
+                                              <a href="http://localhost:8080/product"> All Products</a>
+                                          </li>
+                                          <li>
+                                              <a href="http://localhost:8080/product/type">View Product Types</a>
+                                          </li>
+
+                                      </ul>
+                                  
+                                  <!-- /.nav-second-level -->
+                              </li>
+                              
+                                  <li>
+                                      <a href="http://localhost:8080/dashboard#" aria-expanded="false" aria-label="Engagements">
+                                          <i class="fa fa-inbox fa-fw"></i>
+                                          <span>Engagements</span>
+                                          <span class="glyphicon arrow"></span>
+                                      </a>
+                                      <ul class="nav nav-second-level mm-collapse" style="background:#141414;color:#ffffff">
+                                          <li>
+                                              <a href="http://localhost:8080/engagements_all">All Engagements</a>
+                                          </li>
+                                          <li>
+                                              <a href="http://localhost:8080/engagement">Active Engagements</a>
+                                          </li>
+                                          <li>
+                                              <a href="http://localhost:8080/test_type">Test Types</a>
+                                          </li>
+                                          <li>
+                                              <a href="http://localhost:8080/dev_env">Environments</a>
+                                          </li>
+                                      </ul>
+                                      <!-- /.nav-second-level -->
+                                  </li>
+                                  <li>
+                                      <a href="http://localhost:8080/dashboard#" aria-expanded="false" aria-label="Findings">
+                                          <i class="fa fa-bug fa-fw"></i>
+                                          <span>Findings</span>
+                                          <span class="g#f5f5f5lyphicon arrow"></span>
+  				    </a>
+                                      <ul class="nav nav-second-level mm-collapse" style="background:#141414;color:#ffffff">
+                                          <li>
+                                              <a href="http://localhost:8080/finding/open">Open Findings</a>
+                                          </li>
+                                          <li>
+                                              <a href="http://localhost:8080/finding/accepted">Accepted Findings</a>
+                                          </li>
+                                          <li>
+                                              <a href="http://localhost:8080/finding">All Findings</a>
+                                          </li>
+                                          <li>
+                                              <a href="http://localhost:8080/finding/closed">Closed Findings</a>
+                                          </li>
+                                          <li>
+                                              <a href="http://localhost:8080/template">Finding Templates</a>
+                                          </li>
+                                      </ul>
+                                      <!-- /.nav-second-level -->
+                                  </li>
+                                  <li>
+                                      <a href="http://localhost:8080/dashboard#" aria-expanded="false" aria-label="Endpoints">
+  					                    <i class="fa fa-sitemap fa-fw"></i>
+                                          <span>Endpoints</span>
+                                          <span class="glyphicon arrow"></span>
+                                      </a>
+                                      <ul class="nav nav-second-level mm-collapse" style="background:#141414;color:#ffffff">
+                                          <li>
+                                              <a href="http://localhost:8080/endpoint">All Endpoints</a>
+                                          </li>
+                                          <li>
+                                              <a href="http://localhost:8080/endpoint/vulnerable">
+                                                  Vulnerable Endpoints
+                                              </a>
+                                          </li>
+                                      </ul>
+                                  </li>
+                              
+                              
+                              <li>
+                                  <a href="http://localhost:8080/dashboard#" aria-expanded="false" aria-label="Reports">
+  				                    <i class="fa fa-file-text-o fa-fw"></i>
+                                      <span>Reports</span>
+                                      <span class="glyphicon arrow"></span>
+                                  </a>
+                                  <ul class="nav nav-second-level mm-collapse" style="background:#141414;color:#ffffff">
+                                      <li><a href="http://localhost:8080/reports"> All Reports </a></li>
+                                      <li><a href="http://localhost:8080/reports/builder"> Report Builder </a></li>
+                                  </ul>
+                                  <!-- /.nav-second-level -->
+                              </li>
+                              <li>
+                                  <a href="http://localhost:8080/dashboard#" aria-expanded="false" aria-label="Metrics">
+  				                    <i class="fa fa-bar-chart fa-fw"></i>
+                                      <span>Metrics</span>
+                                      <span class="glyphicon arrow"></span>
+                                  </a>
+                                  <ul class="nav nav-second-level mm-collapse" style="background:#141414;color:#ffffff">
+                                      <li><a href="http://localhost:8080/critical_product_metrics"> Critical Product Metrics </a></li>
+                                      <li><a href="http://localhost:8080/metrics/product/type"> Product Type Metrics </a></li>
+                                      <li><a href="http://localhost:8080/metrics/product/type/counts"> Product Type Counts </a></li>
+                                      
+                                          <li><a href="http://localhost:8080/metrics/simple"> Simple Metrics </a></li>
+                                          <li><a href="http://localhost:8080/metrics/engineer"> Engineer Metrics </a></li>
+                                          <li><a href="http://localhost:8080/metrics/research"> Security Research Metrics </a></li>
+                                      
+                                      <li><a href="http://localhost:8080/metrics?date=5&amp;view=dashboard"> Metrics Dashboard </a></li>
+                                  </ul>
+                                  <!-- /.nav-second-level -->
+                              </li>
+                              
+                              
+                                  <li>
+                                      <a href="http://localhost:8080/user" aria-disabled="true" aria-expanded="false" aria-label="Users">
+                                          <i class="fa fa-user fa-fw"></i>
+                                          <span>Users</span>
+                                      </a>
+                                  </li>
+                              
+                              
+                                  <li>
+  				                    <a href="http://localhost:8080/calendar/engagements" aria-disabled="true" aria-expanded="false" aria-label="Calendar">
+                                          <i class="fa fa-calendar fa-fw"></i>
+                                          <span>Calendar</span>
+                                      </a>
+                                  </li>
+                                  <li>
+  				                    <a href="http://localhost:8080/dashboard#" aria-expanded="false" aria-label="Configuration">
+                                          <i class="fa fa-cog fa-fw"></i>
+                                          <span>Configuration</span>
+                                      </a>
+                                      <ul class="nav nav-second-level mm-collapse" style="background:#141414;color:#ffffff">
+                                          <li><a href="http://localhost:8080/cred">Credential Manager </a></li>
+                                          
+                                          
+                                          <li><a href="http://localhost:8080/tool_config">Tool Configuration </a></li>
+                                          <li><a href="http://localhost:8080/tool_type">Tool Type </a></li>
+                                          <li><a href="http://localhost:8080/notifications/personal">Notifications </a></li>
+                                          <li><a href="http://localhost:8080/rules">Rules Framework </a></li>
+                                          
+                                          <li><a href="http://localhost:8080/system_settings">System Settings </a></li>
+                                          <li><a href="http://localhost:8080/note_type">Note Types </a></li>
+                                          <li><a href="http://localhost:8080/configure_google_sheets">Google Sheets Sync</a></li>
+                                          <li><a href="http://localhost:8080/configure_banner">Login banner</a></li>
+                                          
+                                      </ul>
+                                  </li>
+                              
+
+                          
+
+                          <li id="min-menu">
+                              <a href="http://localhost:8080/dashboard#" id="minimize-menu" title="Expand/Collapse Menu" aria-label="Expand/Collapse Menu">
+                                  <i id="nav-minimize-menu-li" class="fa fa-arrow-circle-right fa-fw"></i>
+                                  <span>Collapse Menu</span>
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+                  <!-- /.sidebar-collapse -->
+              </div>
+              <!-- /.navbar-static-side -->
+          </nav>
+      
+    <!-- Page Content -->
+    <div id="page-wrapper" style="background-color: rgb(41, 41, 38); min-height: 99px;">
+        <div class="container-fluid">
+            <!-- start of tabs -->
+            
+            <div class="row hidden-xs">
+                <div class="col-lg-12">
+                    
+                </div>
+            </div>
+            
+            <!-- end of tabs -->
+            <div class="row">
+                <div class="col-lg-12">
+                    
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div id="base-content" class="col-lg-12">
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+    <!--
+    
+        <h3>Team Dashboard</h3>
+    
+  -->
+<page style="background-color:#858482">
+    <div class="row status" "="">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel secondary-color">
+                <div class="panel-heading">
+                    <div class="row">
+                        <!--<div class="col-xs-3">
+                            <i class="fa fa-bullseye fa-5x"></i>
+                        </div>-->
+                        <div class="col-xs-12 text-right">
+                            <div class="huge">14</div>
+                            <div>Active Engagements</div>
+                        </div>
+                    </div>
+                </div>
+                
+                    <a href="http://localhost:8080/engagement">
+                
+                <div class="panel-footer" style="background-color:#292926; color:#ffffff;">
+                    <span class="pull-left">View Engagement Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <!--<div class="col-xs-3">
+                            <i class="fa fa-bug fa-5x"></i>
+                        </div>-->
+                        <div class="col-xs-12 text-right">
+                            <div class="huge">1493</div>
+                            <div>Last 7 Days</div>
+                        </div>
+                    </div>
+                </div>
+                
+                    <a href="http://localhost:8080/finding/open?date=2&amp;o=numerical_severity">
+                
+                    <div class="panel-footer" style="background-color:#292926; color:#ffffff;">
+                        <span class="pull-left">View Finding Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <!--<div class="col-xs-3">
+                            <i class="fa fa-fire-extinguisher fa-5x"></i>
+                        </div>-->
+                        <div class="col-xs-12 text-right">
+
+
+                            <div class="huge">0</div>
+                            <div>Closed In Last 7 Days</div>
+                        </div>
+                    </div>
+                </div>
+                
+                    <a href="http://localhost:8080/finding/closed?mitigated=2&amp;o=-mitigated">
+                
+                    <div class="panel-footer" style="background-color:#292926; color:#ffffff;">
+                        <span class="pull-left">View Finding Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <!--<div class="col-xs-3">
+                            <i class="fa fa-check fa-5x"></i>
+                        </div>-->
+                        <div class="col-xs-12 text-right">
+                            <div class="huge">0</div>
+                            <div>Risk Accepted In Last 7 Days</div>
+                        </div>
+                    </div>
+                </div>
+                
+                    <a href="http://localhost:8080/finding/accepted?test__engagement__risk_acceptance__created=2">
+                
+                    <div class="panel-footer" style="background-color:#292926; color:#ffffff;">
+                        <span class="pull-left">View Finding Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row" "="">
+
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Historical Finding Severity
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body" style="background-color:#ebf0f5">
+                    <div class="chart" id="donut-chart" style="padding: 0px; position: relative; cursor: auto;"><canvas class="flot-base" width="462" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 462px; height: 300px;"></canvas><canvas class="flot-overlay" width="462" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 462px; height: 300px;"></canvas><div class="legend"><div style="position: absolute; width: 82px; height: 80px; top: 5px; right: 5px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div><table style="position:absolute;top:5px;right:5px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #d9534f;overflow:hidden"></div></div></td><td class="legendLabel">Critical</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #f0ad4e;overflow:hidden"></div></div></td><td class="legendLabel">High</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #f0de28;overflow:hidden"></div></div></td><td class="legendLabel">Medium</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #337ab7;overflow:hidden"></div></div></td><td class="legendLabel">Low</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E0E0E0;overflow:hidden"></div></div></td><td class="legendLabel">Informational</td></tr></tbody></table></div></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Reported Finding Severity by Month
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body" style="background-color:#ebf0f5">
+                    <div class="chart" id="line-chart" style="padding: 0px; position: relative;"><canvas class="flot-base" width="462" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 462px; height: 300px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 154px; top: 283px; left: 213px; text-align: center;">00:00:00</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 270px; left: 20px; text-align: right;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 225px; left: 7px; text-align: right;">250</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 180px; left: 7px; text-align: right;">500</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 135px; left: 7px; text-align: right;">750</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 90px; left: 1px; text-align: right;">1000</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 45px; left: 1px; text-align: right;">1250</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 0px; left: 1px; text-align: right;">1500</div></div></div><canvas class="flot-overlay" width="462" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 462px; height: 300px;"></canvas><div class="legend"><div style="position: absolute; width: 56px; height: 64px; top: 13px; right: 28px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div><table style="position:absolute;top:13px;right:28px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #d9534f;overflow:hidden"></div></div></td><td class="legendLabel"> Critical</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #f0ad4e;overflow:hidden"></div></div></td><td class="legendLabel"> High</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #f0de28;overflow:hidden"></div></div></td><td class="legendLabel"> Medium</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #337ab7;overflow:hidden"></div></div></td><td class="legendLabel"> Low</td></tr></tbody></table></div></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-6 -->
+    </div>
+<div class="row" "="">
+    
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Top 5 Products By Vulnerabilities
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body" style="background-color:#ebf0f5">
+                    <div id="top-five" class="graph" style="padding: 0px; position: relative;"><canvas class="flot-base" width="462" height="76" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 462px; height: 76.5px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 92px; top: 60px; left: 59px; text-align: center;">KP1</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 92px; top: 60px; left: 145px; text-align: center;">KP3</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 92px; top: 60px; left: 230px; text-align: center;">KP2</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 92px; top: 60px; left: 315px; text-align: center;">KP5</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 92px; top: 60px; left: 401px; text-align: center;">KP9</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 0px; left: 1px; text-align: right;">1500</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 47px; left: 20px; text-align: right;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 31px; left: 7px; text-align: right;">500</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 16px; left: 1px; text-align: right;">1000</div></div></div><canvas class="flot-overlay" width="462" height="76" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 462px; height: 76.5px;"></canvas><div class="legend"><div style="position: absolute; width: 82px; height: 80px; top: 13px; right: 17px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div><table style="position:absolute;top:13px;right:17px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #d9534f;overflow:hidden"></div></div></td><td class="legendLabel">Critical</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #f0ad4e;overflow:hidden"></div></div></td><td class="legendLabel">High</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #f0de28;overflow:hidden"></div></div></td><td class="legendLabel">Medium</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #337ab7;overflow:hidden"></div></div></td><td class="legendLabel">Low</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E0E0E0;overflow:hidden"></div></div></td><td class="legendLabel">Informational</td></tr></tbody></table></div></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+    
+
+      <div class="col-lg-6">
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                Top 10 CVE by Vulnerabilities
+              </div>
+              <div class="panel-body" style="background-color:#ebf0f5"><div class="chart" id="donut-chart1" style="padding: 0px; position: relative; cursor: auto;"><canvas class="flot-base" width="462" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 462px; height: 300px;"></canvas><canvas class="flot-overlay" width="462" height="300" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 462px; height: 300px;"></canvas><div class="legend"><div style="position: absolute; width: 82px; height: 80px; top: 5px; right: 5px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div><table style="position:absolute;top:5px;right:5px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #d9534f;overflow:hidden"></div></div></td><td class="legendLabel">Critical</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #f0ad4e;overflow:hidden"></div></div></td><td class="legendLabel">High</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #f0de28;overflow:hidden"></div></div></td><td class="legendLabel">Medium</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #337ab7;overflow:hidden"></div></div></td><td class="legendLabel">Low</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid #E0E0E0;overflow:hidden"></div></div></td><td class="legendLabel">Informational</td></tr></tbody></table></div></div></div>
+         </div>
+      </div>
+</div>
+<div class="row" "="">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Unassigned Answered Engagement Questionnaires
+                </div>
+                <div class="panel-body style=" background-color:#ebf0f5""="">
+                    
+                        <div class="panel-body" style="background-color:#ebf0f5">
+                            <p>No questionnaires found.</p>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" col-xs-12"="">
+        
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Weekly activity, displayed by day, of findings you reported.*
+                    </div>
+                    <div class="panel-body" style="background-color:#ebf0f5">
+                        <div class="chart" id="punchcard" style="padding: 0px; position: relative;"><canvas class="flot-base" width="986" height="350" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 986px; height: 350px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 44px; text-align: center;"><span class="small">02/09<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 78px; text-align: center;"><span class="small">02/16<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 112px; text-align: center;"><span class="small">02/23<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 147px; text-align: center;"><span class="small">03/01<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 181px; text-align: center;"><span class="small">03/08<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 215px; text-align: center;"><span class="small">03/15<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 249px; text-align: center;"><span class="small">03/22<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 283px; text-align: center;"><span class="small">03/29<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 318px; text-align: center;"><span class="small">04/05<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 352px; text-align: center;"><span class="small">04/12<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 386px; text-align: center;"><span class="small">04/19<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 420px; text-align: center;"><span class="small">04/26<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 454px; text-align: center;"><span class="small">05/03<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 489px; text-align: center;"><span class="small">05/10<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 523px; text-align: center;"><span class="small">05/17<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 557px; text-align: center;"><span class="small">05/24<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 591px; text-align: center;"><span class="small">05/31<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 625px; text-align: center;"><span class="small">06/07<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 660px; text-align: center;"><span class="small">06/14<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 694px; text-align: center;"><span class="small">06/21<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 728px; text-align: center;"><span class="small">06/28<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 762px; text-align: center;"><span class="small">07/05<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 796px; text-align: center;"><span class="small">07/12<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 831px; text-align: center;"><span class="small">07/19<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 865px; text-align: center;"><span class="small">07/26<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 899px; text-align: center;"><span class="small">08/02<br>2020</span></div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 36px; top: 317px; left: 933px; text-align: center;"><span class="small">08/09<br>2020</span></div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 22px; left: 3px; text-align: right;">Sun</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 65px; left: 1px; text-align: right;">Mon</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 109px; left: 4px; text-align: right;">Tue</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 152px; left: 0px; text-align: right;">Wed</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 195px; left: 0px; text-align: right;">Thur</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 239px; left: 10px; text-align: right;">Fri</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 282px; left: 6px; text-align: right;">Sat</div></div></div><canvas class="flot-overlay" width="986" height="350" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 986px; height: 350px;"></canvas></div>
+                        <p class="text-center text-muted small">Week begins on date displayed.</p>
+                        <p>
+                            <br>
+                             <span class="text-muted small">* Weeks are only displayed if findings are available.</span>
+                        </p>
+                    </div>
+                </div>
+          </div>
+      
+   </div>
+  </page>
+
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+    <footer class="footer" style="background:#141414">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center text-">
+                     <p>
+                      <a href="http://localhost:8080/"><img class="logo" src="./KapsecUVM_files/kapsec_icon.png" alt="Kapsec Pyramid" style="width:50px;height:50px;"></a><br>
+                     </p>
+                     <p>All Rights Reserved by Kapstone Technologies, LLC 2020.</p>
+                     <p>Designed and Developed by Kapstone Technologies,LLC.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script src="./KapsecUVM_files/jquery.js"></script>
+<!--  jQuery UI -->
+<script src="./KapsecUVM_files/jquery-ui.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="./KapsecUVM_files/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="./KapsecUVM_files/metisMenu.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="./KapsecUVM_files/sb-admin-2.js"></script>
+<!-- Calendar JavaScript -->
+<script src="./KapsecUVM_files/moment.min.js"></script>
+<script src="./KapsecUVM_files/fullcalendar.min.js"></script>
+<!-- jquery cookie -->
+<script src="./KapsecUVM_files/jquery.cookie.js"></script>
+<!-- DataTables Javascript -->
+<script src="./KapsecUVM_files/datatables.min.js"></script>
+<!-- our JS -->
+<script src="./KapsecUVM_files/index.js"></script>
+<script type="application/javascript">
+    $(document).ready(function() {
+        $('.has-popover').popover({'trigger':'hover'});
+        
+        $('.dropdown-toggle').click(function() { get_alerts(); });
+        setInterval(function() {
+            update_alertcount();
+        }, 10000);
+        
+        function update_alertcount() {
+            $.get("/alerts/count", function (data) {
+                if (data.count != $('#alert_count').text()) {
+                    $('#alert_count').text(data.count);
+                    $('#alert_count').removeClass().addClass('badge badge-count badge-count' + data.count);
+                }
+            });
+        }
+
+        function htmlEscape(str) {
+          return str
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        }
+
+        function get_alerts() {
+            $('.dropdown-alerts').html('<div class="text-center"><i class="fa fa-spin fa-spinner"></i></div>');
+            $.get("/alerts/json?limit=12", function (data) {
+                $('.dropdown-alerts').empty();
+                $.each(data, function(i, elem) {
+                  var titleField = elem.fields.title ? elem.fields.title : elem.fields.description;
+                  var desc = titleField.length < 50 ? titleField : jQuery.trim(titleField).substring(0,50).trim(this) + '...';
+                  var dropdown_alert = "alert-list" + i;
+                  $('.dropdown-alerts').append('<li><div style="padding: 3px 20px;"><i class="fa fa-' + htmlEscape(elem.fields.icon) +
+                                                ' fa-fw"></i><a href="' + htmlEscape(elem.fields.url) + '" id=' + dropdown_alert + '></a><span class="pull-right text-muted small">' +
+                                               htmlEscape(elem.fields.source) + '</span></div></li><li class="divider"></li>');
+                  $("#" + dropdown_alert).text(desc);
+                });
+                $('.dropdown-alerts').append('<li><a class="text-center" href="/alerts"><strong>See All Alerts </strong>' +
+                                             '<i class="fa fa-angle-right"></i></a></li>');
+                $('.dropdown-alerts').append('<li><a class="text-center" href="/delete_alerts"><strong>Clear All Alerts </strong>' +
+                                           '<i class="fa fa-angle-right"></i></a></li>');
+            });
+        }
+    });
+</script>
+
+
+    <!-- Flot Charts JavaScript -->
+    <script src="./KapsecUVM_files/excanvas.min.js"></script>
+    <script src="./KapsecUVM_files/jquery.flot.js"></script>
+    <script src="./KapsecUVM_files/jquery.flot.pie.js"></script>
+    <script src="./KapsecUVM_files/jquery.flot.time.js"></script>
+    <script src="./KapsecUVM_files/jquery.flot.tooltip.min.js"></script>
+    <script src="./KapsecUVM_files/jquery.flot.stack.js"></script>
+    <script src="./KapsecUVM_files/jquery.flot.resize.js"></script>
+    
+        <script src="./KapsecUVM_files/JUMFlot.min.js"></script>
+        <script src="./KapsecUVM_files/jquery.flot.mouse.js"></script>
+        <script src="./KapsecUVM_files/jquery.flot.bubbles.js"></script>
+    
+    <script>
+        $(function () {
+            var options = {
+                xaxes: [{
+                    mode: 'time'
+                }],
+                yaxes: [{
+                    min: 0
+                }],
+                series: {
+                    lines: {
+                        show: true
+                    },
+                    points: {
+                        show: true
+                    }
+                },
+                grid: {
+                    hoverable: true,
+                    borderWidth: 1,
+                    borderColor: '#e7e7e7',
+
+                },
+                tooltip: true,
+            };
+            chart_div();
+            severity_pie();
+            top_five_products();
+            all_cve();
+
+            function all_cve() {
+                var data = [{
+                    label: "Critical",
+                    color: "#d9534f",
+                    data: 15
+                }, {
+                    label: "High",
+                    color: "#f0ad4e",
+                    data: 207
+                }, {
+                    label: "Medium",
+                    color: "#f0de28",
+                    data: 1279
+                }, {
+                    label: "Low",
+                    color: "#337ab7",
+                    data: 123
+                }, {
+                    label: "Informational",
+                    color: "#E0E0E0",
+                    data: 156
+                }];
+
+                var plotObj = $.plot($("#donut-chart1"), data, {
+                    series: {
+                        pie: {
+                            innerRadius: 0.5,
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: false,
+                                radius: 2 / 3,
+                                formatter: function (label, series) {
+                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;z-index:9999;">' + label + '<br/>' + series.data[0][1] + '</div>';
+
+                                },
+
+                            }
+                        }
+                    },
+                    grid: {
+                        hoverable: true,
+                    },
+                    tooltip:true,
+                    tooltipOpts: {
+                        content: function(label, xval, yval, flotItem) {
+                            return label+"<br>"+yval
+                        }
+                    }
+                });
+            }
+
+            function top_five_products() {
+                var critical = [];
+                var high = [];
+                var medium = [];
+                var low = [];
+                var info = [];
+                var ticks = []
+                
+                    ttp = 1;
+                    ticks.push([ttp, "KP1"]);
+                    critical.push([ttp, 74]);
+                    high.push([ttp, 31]);
+                    medium.push([ttp, 40]);
+                    low.push([ttp, 1]);
+                    info.push([ttp, 5]);
+                
+                    ttp = 2;
+                    ticks.push([ttp, "KP3"]);
+                    critical.push([ttp, 13]);
+                    high.push([ttp, 163]);
+                    medium.push([ttp, 1160]);
+                    low.push([ttp, 94]);
+                    info.push([ttp, 26]);
+                
+                    ttp = 3;
+                    ticks.push([ttp, "KP2"]);
+                    critical.push([ttp, 1]);
+                    high.push([ttp, 5]);
+                    medium.push([ttp, 8]);
+                    low.push([ttp, 1]);
+                    info.push([ttp, 5]);
+                
+                    ttp = 4;
+                    ticks.push([ttp, "KP5"]);
+                    critical.push([ttp, 0]);
+                    high.push([ttp, 34]);
+                    medium.push([ttp, 103]);
+                    low.push([ttp, 27]);
+                    info.push([ttp, 123]);
+                
+                    ttp = 5;
+                    ticks.push([ttp, "KP9"]);
+                    critical.push([ttp, 0]);
+                    high.push([ttp, 2]);
+                    medium.push([ttp, 0]);
+                    low.push([ttp, 0]);
+                    info.push([ttp, 0]);
+                
+
+                data1 = [
+                    {
+                        data: critical,
+                        color: "#d9534f",
+                        bars: {fill: 1},
+                        label: 'Critical',
+                    },
+                    {
+                        data: high,
+                        color: "#f0ad4e",
+                        bars: {fill: 1},
+                        label: 'High',
+
+                    },
+                    {
+                        data: medium,
+                        color: "#f0de28",
+                        bars: {fill: 1},
+                        label: 'Medium',
+                    },
+                    {
+                        data: low,
+                        color: "#337ab7",
+                        bars: {fill: 1},
+                        label: 'Low',
+                    },
+                    {
+                        data: info,
+                        color: "#E0E0E0",
+                        bars: {fill: 1},
+                        label: "Informational",
+                    },
+                ];
+
+                $.plot("#top-five", data1, {
+                    series: {
+                        stack: true,
+                        bars: {
+                            show: true,
+                            barWidth: .9,
+                            'align': "center",
+                        },
+
+                    },
+                    grid: {
+                        hoverable: false,
+                        borderWidth: 1,
+                        borderColor: '#e7e7e7',
+
+                    },
+                    tooltip: false,
+                    legend: {
+                        position: "ne"
+                    },
+                    xaxis: {
+                        ticks: ticks,
+                    },
+                });
+            }
+
+            function chart_div() {
+                var critical = [],
+                        high = [],
+                        medium = [],
+                        low = [];
+
+                
+                    month = {'y': '2020-08', 'a': 88, 'b': 237, 'c': 1313, 'd': 124, 'e': 160};
+                    ttp = new Date(month['y'] + '-01').getTime();
+                    critical.push([ttp, month['a']]);
+                    high.push([ttp, month['b']]);
+                    medium.push([ttp, month['c']]);
+                    low.push([ttp, month['d']]);
+                
+
+
+                var plotObj = $.plot($("#line-chart"), [{
+                            data: critical,
+                            label: " Critical",
+                            color: "#d9534f",
+                        }, {
+                            data: high,
+                            label: " High",
+                            color: '#f0ad4e',
+                        }, {
+                            data: medium,
+                            label: " Medium",
+                            color: '#f0de28',
+                        }, {
+                            data: low,
+                            label: " Low",
+                            color: '#337ab7',
+                        }],
+                        options);
+            }
+
+            function severity_pie() {
+                var data = [{
+                    label: "Critical",
+                    color: "#d9534f",
+                    data: 88
+                }, {
+                    label: "High",
+                    color: "#f0ad4e",
+                    data: 237
+                }, {
+                    label: "Medium",
+                    color: "#f0de28",
+                    data: 1313
+                }, {
+                    label: "Low",
+                    color: "#337ab7",
+                    data: 124
+                }, {
+                    label: "Informational",
+                    color: "#E0E0E0",
+                    data: 160
+                }];
+
+                var plotObj = $.plot($("#donut-chart"), data, {
+                    series: {
+                        pie: {
+                            innerRadius: 0.5,
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: false,
+                                radius: 2 / 3,
+                                formatter: function (label, series) {
+                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;z-index:9999;">' + label + '<br/>' + series.data[0][1] + '</div>';
+
+                                },
+
+                            }
+                        }
+                    },
+                    grid: {
+                        hoverable: true,
+                    },
+                    tooltip:true,
+                    tooltipOpts: {
+                        content: function(label, xval, yval, flotItem) {
+                            return label+"<br>"+yval
+                        }
+                    }
+                });
+            }
+
+            
+
+                punchcard("#punchcard", [[0, 0, 0.0, 0], [0, 1, 0.0, 0], [0, 2, 0.0, 0], [0, 3, 0.0, 0], [0, 4, 0.0, 0], [0, 5, 0.0, 0], [0, 6, 0.0, 0], [1, 0, 0.0, 0], [1, 1, 0.0, 0], [1, 2, 0.0, 0], [1, 3, 0.0, 0], [1, 4, 0.0, 0], [1, 5, 0.0, 0], [1, 6, 0.0, 0], [2, 0, 0.0, 0], [2, 1, 0.0, 0], [2, 2, 0.0, 0], [2, 3, 0.0, 0], [2, 4, 0.0, 0], [2, 5, 0.0, 0], [2, 6, 0.0, 0], [3, 0, 0.0, 0], [3, 1, 0.0, 0], [3, 2, 0.0, 0], [3, 3, 0.0, 0], [3, 4, 0.0, 0], [3, 5, 0.0, 0], [3, 6, 0.0, 0], [4, 0, 0.0, 0], [4, 1, 0.0, 0], [4, 2, 0.0, 0], [4, 3, 0.0, 0], [4, 4, 0.0, 0], [4, 5, 0.0, 0], [4, 6, 0.0, 0], [5, 0, 0.0, 0], [5, 1, 0.0, 0], [5, 2, 0.0, 0], [5, 3, 0.0, 0], [5, 4, 0.0, 0], [5, 5, 0.0, 0], [5, 6, 0.0, 0], [6, 0, 0.0, 0], [6, 1, 0.0, 0], [6, 2, 0.0, 0], [6, 3, 0.0, 0], [6, 4, 0.0, 0], [6, 5, 0.0, 0], [6, 6, 0.0, 0], [7, 0, 0.0, 0], [7, 1, 0.0, 0], [7, 2, 0.0, 0], [7, 3, 0.0, 0], [7, 4, 0.0, 0], [7, 5, 0.0, 0], [7, 6, 0.0, 0], [8, 0, 0.0, 0], [8, 1, 0.0, 0], [8, 2, 0.0, 0], [8, 3, 0.0, 0], [8, 4, 0.0, 0], [8, 5, 0.0, 0], [8, 6, 0.0, 0], [9, 0, 0.0, 0], [9, 1, 0.0, 0], [9, 2, 0.0, 0], [9, 3, 0.0, 0], [9, 4, 0.0, 0], [9, 5, 0.0, 0], [9, 6, 0.0, 0], [10, 0, 0.0, 0], [10, 1, 0.0, 0], [10, 2, 0.0, 0], [10, 3, 0.0, 0], [10, 4, 0.0, 0], [10, 5, 0.0, 0], [10, 6, 0.0, 0], [11, 0, 0.0, 0], [11, 1, 0.0, 0], [11, 2, 0.0, 0], [11, 3, 0.0, 0], [11, 4, 0.0, 0], [11, 5, 0.0, 0], [11, 6, 0.0, 0], [12, 0, 0.0, 0], [12, 1, 0.0, 0], [12, 2, 0.0, 0], [12, 3, 0.0, 0], [12, 4, 0.0, 0], [12, 5, 0.0, 0], [12, 6, 0.0, 0], [13, 0, 0.0, 0], [13, 1, 0.0, 0], [13, 2, 0.0, 0], [13, 3, 0.0, 0], [13, 4, 0.0, 0], [13, 5, 0.0, 0], [13, 6, 0.0, 0], [14, 0, 0.0, 0], [14, 1, 0.0, 0], [14, 2, 0.0, 0], [14, 3, 0.0, 0], [14, 4, 0.0, 0], [14, 5, 0.0, 0], [14, 6, 0.0, 0], [15, 0, 0.0, 0], [15, 1, 0.0, 0], [15, 2, 0.0, 0], [15, 3, 0.0, 0], [15, 4, 0.0, 0], [15, 5, 0.0, 0], [15, 6, 0.0, 0], [16, 0, 0.0, 0], [16, 1, 0.0, 0], [16, 2, 0.0, 0], [16, 3, 0.0, 0], [16, 4, 0.0, 0], [16, 5, 0.0, 0], [16, 6, 0.0, 0], [17, 0, 0.0, 0], [17, 1, 0.0, 0], [17, 2, 0.0, 0], [17, 3, 0.0, 0], [17, 4, 0.0, 0], [17, 5, 0.0, 0], [17, 6, 0.0, 0], [18, 0, 0.0, 0], [18, 1, 0.0, 0], [18, 2, 0.0, 0], [18, 3, 0.0, 0], [18, 4, 0.0, 0], [18, 5, 0.0, 0], [18, 6, 0.0, 0], [19, 0, 0.0, 0], [19, 1, 0.0, 0], [19, 2, 0.0, 0], [19, 3, 0.0, 0], [19, 4, 0.0, 0], [19, 5, 0.0, 0], [19, 6, 0.0, 0], [20, 0, 0.0, 0], [20, 1, 0.0, 0], [20, 2, 0.0, 0], [20, 3, 0.0, 0], [20, 4, 0.0, 0], [20, 5, 0.0, 0], [20, 6, 0.0, 0], [21, 0, 0.0, 0], [21, 1, 0.0, 0], [21, 2, 0.0, 0], [21, 3, 0.0, 0], [21, 4, 0.0, 0], [21, 5, 0.0, 0], [21, 6, 0.0, 0], [22, 0, 0.0, 0], [22, 1, 0.0, 0], [22, 2, 0.0, 0], [22, 3, 0.0, 0], [22, 4, 0.0, 0], [22, 5, 0.0, 0], [22, 6, 0.0, 0], [23, 0, 0.0, 0], [23, 1, 0.0, 0], [23, 2, 0.0, 0], [23, 3, 0.0, 0], [23, 4, 0.0, 0], [23, 5, 0.0, 0], [23, 6, 0.0, 0], [24, 0, 0.0, 0], [24, 1, 0.0, 0], [24, 2, 0.0, 0], [24, 3, 0.0, 0], [24, 4, 0.0, 0], [24, 5, 0.0, 0], [24, 6, 0.0, 0], [25, 0, 0.0, 0], [25, 1, 1.0, 1493], [25, 2, 0.036600337822677166, 2], [25, 3, 0.0, 0], [25, 4, 0.3354476370667467, 168], [25, 5, 0.41650476872547926, 259], [25, 6, 0.0, 0], [26, 0, 0.0, 0], [26, 1, 0.0, 0], [26, 2, 0.0, 0], [26, 3, 0.0, 0], [26, 4, 0.0, 0], [26, 5, 0.0, 0], [26, 6, 0.0, 0]], [[0, "<span class='small'>02/09<br/>2020</span>"], [1, "<span class='small'>02/16<br/>2020</span>"], [2, "<span class='small'>02/23<br/>2020</span>"], [3, "<span class='small'>03/01<br/>2020</span>"], [4, "<span class='small'>03/08<br/>2020</span>"], [5, "<span class='small'>03/15<br/>2020</span>"], [6, "<span class='small'>03/22<br/>2020</span>"], [7, "<span class='small'>03/29<br/>2020</span>"], [8, "<span class='small'>04/05<br/>2020</span>"], [9, "<span class='small'>04/12<br/>2020</span>"], [10, "<span class='small'>04/19<br/>2020</span>"], [11, "<span class='small'>04/26<br/>2020</span>"], [12, "<span class='small'>05/03<br/>2020</span>"], [13, "<span class='small'>05/10<br/>2020</span>"], [14, "<span class='small'>05/17<br/>2020</span>"], [15, "<span class='small'>05/24<br/>2020</span>"], [16, "<span class='small'>05/31<br/>2020</span>"], [17, "<span class='small'>06/07<br/>2020</span>"], [18, "<span class='small'>06/14<br/>2020</span>"], [19, "<span class='small'>06/21<br/>2020</span>"], [20, "<span class='small'>06/28<br/>2020</span>"], [21, "<span class='small'>07/05<br/>2020</span>"], [22, "<span class='small'>07/12<br/>2020</span>"], [23, "<span class='small'>07/19<br/>2020</span>"], [24, "<span class='small'>07/26<br/>2020</span>"], [25, "<span class='small'>08/02<br/>2020</span>"], [26, "<span class='small'>08/09<br/>2020</span>"]]);
+
+            
+
+        });
+
+    </script>
+
+
+
+
+<a id="toTop" title="Back to Top" class="btn btn-primary btn-circle" style="display: inline;"><i class="fa fa-fw fa-arrow-up"></i></a><div class="flotTip" style="position: absolute; background: rgb(255, 255, 255); z-index: 1040; padding: 0.4em 0.6em; border-radius: 0.5em; font-size: 0.8em; border: 1px solid rgb(17, 17, 17); white-space: nowrap; left: 370px; top: 559.062px; display: none;"></div></body></html>

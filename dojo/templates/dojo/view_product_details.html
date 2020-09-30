@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load humanize %}
+{% load display_tags %}
+{% block add_styles %}
+  .chart {height: 160px}
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading tight">
+        <div class="clearfix">
+          <h3 class="pull-left">
+                    Description
+                </h3>
+          <div class="dropdown pull-right">
+            <div class="btn-group">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            <span class="fa fa-bars"></span>
+                            <span class="caret"></span>
+                        </button>
+              <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                {% if user.is_staff %}
+                <li role="presentation">
+                  <a class="" href="{% url 'edit_product' prod.id %}">
+                                        <i class="fa fa-pencil-square-o"></i> Edit
+                                    </a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li role="presentation">
+                  <a class="" href="{% url 'add_meta_data' prod.id %}">
+                                        <i class="fa fa-list-alt"></i> Add Custom Fields
+                                    </a>
+                  </li>
+                <li role="presentation">
+                  <a title="Edit Custom Fields"
+                     href="{% url 'edit_meta_data' prod.id %}">
+                      <i class="fa fa-pencil-square-o"></i> Edit Custom Fields
+                  </a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li role="presentation">
+                  <a class="" href="{% url 'new_object' prod.id %}">
+                                        <i class="fa fa-list-alt"></i> Add Product Tracking Files
+                                    </a>
+                </li>
+                <li role="presentation">
+                  <a href="{% url 'view_objects' prod.id %}">
+                                    <i class="fa fa-history"></i> View Product Tracking Files
+                                </a>
+                </li>
+                <li role="separator" class="divider"></li>
+                {% endif %}
+                <li role="presentation">
+                  <a href="{% url 'product_report' prod.id %}?title=&active=1&verified=1&false_p=2&duplicate=2">
+                                    <i class="fa fa-file-text-o"></i> Product Report
+                                </a>
+                </li>
+                {% if system_settings.enable_benchmark and benchmark_type %}
+                <li role="separator" class="divider"></li>
+                {% for bt in benchmark_type %}
+                <li role="presentation">
+                  <a title="{{ bt.name }}" href="{% url 'view_product_benchmark' prod.id bt.id %}">
+                                    <span class="fa fa-list"></span> {{ bt.name }} {{ bt.version }}
+                                </a>
+                </li>
+                {% endfor %} {% endif %}
+                <li role="separator" class="divider"></li>
+                <li role="presentation">
+                  <a href="{% url 'action_history' prod|content_type prod.id %}">
+                                    <i class="fa fa-history"></i> View History
+                                </a>
+                </li>
+                {% if user.is_staff %}
+                <li role="separator" class="divider"></li>
+                <li role="presentation">
+                  <a class="text-danger" href="{% url 'delete_product' prod.id %}">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </a>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body" style = "color:#695f5f;">
+        {{ prod.description|markdown_render }}
+      </div>
+    </div>
+<!-- metrics -->
+
+<div class="row">
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><span class="fa fa-pie-chart" aria-hidden="true"></span> Metrics</h3>
+    </div>
+    <table class="table table-condensed">
+      <tbody>
+        <tr>
+          <td class="col-sm-2 bg-vuln-critical vuln-count text-center">{{ critical }}<span class="hidden-xs"><br><small>CRITICAL</small></span></td>
+          <td class="col-sm-2 bg-vuln-high vuln-count text-center">{{ high }}<span class="hidden-xs"><br><small>HIGH</small></span></td>
+          <td class="col-sm-2 bg-vuln-medium vuln-count text-center">{{ medium }}<span class="hidden-xs"><br><small>MEDIUM</small></span></td>
+          <td class="col-sm-2 bg-vuln-low vuln-count text-center">{{ low }}<span class="hidden-xs"><br><small>LOW</small></span></td>
+          <td class="col-sm-2 bg-vuln-info vuln-count text-center">{{ info }}<span class="hidden-xs"><br><small>INFORMATIONAL</small></span></td>
+          <td class="col-sm-2 bg-muted vuln-count text-center">{{ total }}<span class="hidden-xs"><br><small>TOTAL</small></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+<!-- end metrics -->
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-bolt" aria-hidden="true"></span> Technologies {%if app_analysis%}({{ app_analysis.count }}){%endif%}
+          <a title="Add New Technology" class="pull-right btn btn-sm btn-primary" href="/product/{{ prod.id }}/new_technology"><span class="fa fa-plus"></span> </a>
+        </h3>
+      </div>
+      <ul class="list-group" style = "color:#695f5f;">
+      {% for app in app_analysis %}
+        <li class="list-group-item"><span class="badge">{{ app.version|version_num }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ app.website }}, Confidence: {{ app.confidence }}">{{ app.name }}</span></li>
+      {% empty %}
+        <li class="list-group-item"><small class="text-muted"><em>There are no technologies.</em></small></li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-gavel" aria-hidden="true"></span> Regulations {% if prod.regulations.count > 0%}({{ prod.regulations.count }}){%endif%}</h3>
+      </div>
+      <ul class="list-group" style = "color:#695f5f;">
+      {% for regulation in prod.regulations.all %}
+        <li class="list-group-item"><span class="badge">{{ regulation.get_category_display }}</span><span data-toggle="tooltip" data-placement="bottom" title="{{ product.regulation.name }}">{{ regulation.acronym }}</span> <small class="text-muted">{{ regulation.jurisdiction }}</small></li>
+      {% empty %}
+        <li class="list-group-item"><small class="text-muted"><em>There are no regulations.</em></small></li>
+      {% endfor %}
+      </ul>
+
+    </div>
+  </div>
+</div>
+      <!-- Benchmark Tab -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class ="fa fa-balance-scale" aria-hidden="true"></span> Benchmark Progress </h3>
+      </div>
+        <ul class="list-group" style = "color:#695f5f;">
+          {% for Abenchpercent in benchmarks_percents %}
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-md-6">
+                <span class="float-md-left"><strong>{{Abenchpercent.0}}</strong></span>
+              </div>
+              <div class="col-md-6 text-right">
+              <span class="float-md-right">{{Abenchpercent.1|default:"0&#37;"}} Complete</span>
+              </div>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{Abenchpercent.1}}"
+              aria-valuemin="0%" aria-valuemax="100%" style="width:{{Abenchpercent.1}}">
+              <span class="sr-only">{{Abenchpercent.1|default:"0&#37;"}} Complete</span>
+              </div>
+            </div>
+          </li>
+          {% empty %}
+            <li class="list-group-item"><small class = "text-muted"><em>There are no benchmarks</em></small></li>
+          {% endfor %}
+        </ul>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Meta Data -->
+<div class="col-md-4">
+  <div class="panel panel-default panel-default-secondary">
+    <div class="panel-heading">
+      <h3 class="panel-title"><span class="fa fa-info-circle fa-fw" aria-hidden="true"></span> Metadata</h3>
+    </div>
+    <div class="table-responsive" style = "color:#695f5f;">
+      <table class="table table-striped" id="set-width">
+        <tbody>
+          <tr>
+            <td style="width: 160px;"><strong>Business Criticality</strong></td>
+            <td>{{ prod.get_business_criticality_display|notspecified }}</td>
+          </tr>
+          <tr>
+            <td><strong>Product Type</strong></td>
+            <td>{{ prod.prod_type|notspecified }}</td>
+          </tr>
+          <tr>
+            <td><strong>Platform</strong></td>
+            <td>{{ prod.get_platform_display|notspecified }}</td>
+          </tr>
+          <tr>
+            <td><strong>Lifecycle</strong></td>
+            <td>{{ prod.get_lifecycle_display|notspecified }}</td>
+          </tr>
+          <tr>
+            <td><strong>Origin</strong></td>
+            <td>{{ prod.get_origin_display|notspecified }}</td>
+          </tr>
+          <tr>
+            <td><strong>User Records</strong></td>
+            <td>
+              {%  if prod.user_records > 0 %}
+              {{ prod.user_records|intcomma }}
+              {% else %}
+              {{ prod.user_records|notspecified }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Revenue</strong></td>
+            <td>
+              {%  if prod.revenue > 0 %}
+                {% if prod.revenue < 1000000 %}{{ prod.revenue|intcomma }}{% else %}{{ prod.revenue|intword }}{% endif %}
+              {% else %}
+                {{ prod.user_records|notspecified }}
+              {% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- End metadata -->
+<!-- Lang -->
+{% if languages %}
+  <div class="panel panel-default panel-default-secondary">
+    <div class="panel-heading">
+      <h3 class="panel-title"><span class="fa fa-language" aria-hidden="true"></span> Languages ({{ languages.count }})</h3>
+    </div>
+    <div class="panel-body">
+        <div class="chart" id="donut-lang"></div>
+        <div style="text-align: center;padding-top: 10px;">
+            {%  if langSummary.files__sum > 0 %}
+            <strong>{{ langSummary.files__sum|intcomma }}</strong> files {%  if langSummary.code__sum %} and {%endif%}
+            {% endif %}
+            {%  if langSummary.code__sum %}
+            <strong>{{ langSummary.code__sum|intcomma }}</strong> lines of code
+            {% endif %}
+        </div>
+    </div>
+  </div>
+{% endif %}
+<!-- end lang  -->
+<!-- Custom fields -->
+{% if product_metadata %}
+  <div class="panel panel-default panel-default-secondary">
+    <div class="panel-heading">
+      <h3 class="panel-title"><span class="fa fa-magic fa-fw" aria-hidden="true"></span> Custom Fields</h3>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <tbody>
+          {% for key, value in product_metadata.items %}
+          <tr>
+            <td style="width: 160px;"><strong>{{ key }}</strong></td>
+            <td>{{ value }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endif %}
+<!-- end custom fields -->
+<!-- Contacts -->
+  <div class="panel panel-default panel-default-secondary">
+    <div class="panel-heading">
+      <h3 class="panel-title"><span class="fa fa-users fa-fw" aria-hidden="true"></span> Contacts</h3>
+    </div>
+    <div class="table-responsive" style = "color:#695f5f;">
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <td style="width: 160px;"><strong>Team Manager</strong></td>
+            <td>{% if prod.team_manager != "0" %}{{ prod.team_manager | default:"Unknown" }}{% endif %}</td>
+          </tr>
+          <tr>
+            <td><strong>Product Manager</strong></td>
+            <td>{% if prod.product_manager != "0" %}{{ prod.product_manager | default:"Unknown" }}{% endif %}</td>
+          </tr>
+          <tr>
+            <td><strong>Technical Contact</strong></td>
+            <td>{% if prod.technical_contact != "0" %}{{ prod.technical_contact | default:"Unknown" }}{% endif %}</td>
+          </tr>
+          <tr>
+            <td><strong>Authorized Users</strong></td>
+            <td>
+              {% if prod.authorized_users.all %}
+                {% if prod.authorized_users.all.count > 1 %}
+                  {% for au in prod.authorized_users.all %}
+                     {{au}}{%if not forloop.last%},{%endif%}
+                  {% endfor %}
+                {% else %}
+                  {{ prod.authorized_users.all.0 }}
+                {% endif %}
+              {% else %}
+                {{ prod.authorized_users.all|notspecified }}
+              {% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<!-- end contacts -->
+<!-- Notifications -->
+<div class="panel panel-default panel-default-secondary" id="edit_notifications">
+  <div class="panel-heading">
+    {% url 'notifications' as notifications_url %}
+    <h3 class="panel-title"><span class="fa fa-users fa-fw" aria-hidden="true"></span> Notifications
+      <i class="fa fa-question-circle has-popover" data-trigger="hover" data-content="These are your personal settings for this product, next to your <a href='{{notifications_url}}'>global notifications</a>." data-placement="right" data-container="body"></i>
+    </h3>
+  </div>
+  <form id="edit_notifications_form" class="form-horizontal" method="post" action="{% url 'edit_notifications' prod.id %}">{% csrf_token %}
+    <div class="table-responsive" style = "color:#695f5f;">
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+              <td id="saving_notifications">&nbsp;</td><td class="centered">Slack</td><td class="centered">HipChat</td><td class="centered">Mail</td><td class="centered">Alert</td>
+          </tr>
+          {% for field in personal_notifications_form.visible_fields %}
+          <tr>
+            <td><strong>{{ field.label }}&nbsp;</strong>
+              {% if field.help_text %}
+              <i class="fa fa-question-circle has-popover" data-trigger="hover" data-content="{{ field.help_text }}" data-placement="right" data-container="body"></i>
+              {% endif %}
+            </td>
+            {% for pk,c in field.field.widget.choices %}
+            <td class="centered"><input id="{{ field.name }}_{{ c }}" type="checkbox" name="{{ field.name }}" {% if c in field.value %}checked{% endif %} value="{{ c }}"/></td>
+            {% endfor %}
+         </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+  </form>
+</div>
+<!-- end Notifications -->
+
+</div>
+</div>
+{% endblock %}
+{% block postscript %}
+  <script type="text/javascript" src="{% static "jquery-highlight/jquery.highlight.js" %}"></script>
+  <!-- Flot Charts JavaScript -->
+  <script src="{% static "flot/excanvas.min.js" %}"></script>
+  <script src="{% static "flot/jquery.flot.js" %}"></script>
+  <script src="{% static "flot/jquery.flot.pie.js" %}"></script>
+  <script src="{% static "flot/jquery.flot.time.js" %}"></script>
+  <script src="{% static "jquery.flot.tooltip/js/jquery.flot.tooltip.min.js" %}"></script>
+  <script src="{% static "flot/jquery.flot.stack.js" %}"></script>
+  <script src="{% static "flot/jquery.flot.resize.js" %}"></script>
+  <script type="text/javascript">
+    $(function(){
+               $('[data-toggle="tooltip"]').tooltip();
+    });
+    $(function() {
+      if (document.referrer.indexOf('simple_search') > 0) {
+        var terms = '';
+        if ($.cookie('highlight')) {
+          terms = $.cookie('highlight').split(' ');
+
+          for (var i = 0; i < terms.length; i++) {
+            $('body').highlight(terms[i]);
+          }
+        }
+
+        $('input#simple_search').val(terms);
+      }
+
+      {% if languages and langSummary.files__count > 0 %}
+      severity_pie();
+      function severity_pie() {
+          var data = [
+          {% for lang in languages %}
+            {% if lang.files %}
+            {
+                label: "&nbsp;{{lang}}",
+                color: "{{lang.language.color }}",
+                data: {{lang.files}}
+            },
+            {% endif %}
+          {% endfor %}
+          ];
+
+          var plotObj = $.plot($("#donut-lang"), data, {
+              series: {
+                  pie: {
+                      innerRadius: 0.5,
+                      show: true,
+                      radius: 1,
+                  }
+              },
+              legend: {
+                  show: true
+              },
+              grid: {
+                  hoverable: true,
+              },
+          });
+        }
+        {% endif %}
+    });
+
+    $(function() {
+      $('div#edit_notifications input[type=checkbox]').on('click', function() {
+        $('#saving_notifications').append(' <small>(saving...)</small>')
+        $('#edit_notifications_form').submit()
+      });
+    });
+
+
+  </script>
+  {% endblock %}

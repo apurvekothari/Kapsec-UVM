@@ -1,0 +1,605 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block add_styles %}
+    .graph {height: 50vh; width: 100%;}
+    .chart {height: 305px}
+    .status .panel {min-height: 140px}
+    #punchcard {height: 350px}
+{% endblock %}
+{% block content %}
+    <!--
+    {% if request.user.is_superuser %}
+        <h3>Team Dashboard</h3>
+    {% else %}
+        <h3>Dashboard for {{ request.user.get_full_name }}</h3>
+    {% endif %}
+  -->
+<page style="background-color:#858482">
+    <div class="row status">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel secondary-color">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-id-badge fa-4x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ engagement_count }}</div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12 text-right">
+                          <div>Active Engagements</div>
+                      </div>
+                    </div>
+                </div>
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'engagement' %}">
+                {% else %}
+                    <a href="{% url 'engagement' %}?engagement__lead={{ request.user.id }}">
+                {% endif %}
+                <div class="panel-footer" style="background-color:#292926; color:#ffffff;">
+                    <span class="pull-left">View Engagement Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-history  fa-4x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ finding_count }}</div>
+                            <!--<div>Last 7 Days</div>-->
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12 text-right">
+                          <div>Last 7 Days</div>
+                      </div>
+                    </div>
+                </div>
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'open_findings' %}?date=2&o=numerical_severity">
+                {% else %}
+                    <a href="{% url 'open_findings' %}?date=2&reporter={{ request.user.id }}&o=numerical_severity">
+                {% endif %}
+                    <div class="panel-footer" style="background-color:#292926; color:#ffffff;">
+                        <span class="pull-left">View Finding Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading" style = "background-color:#3e843e;">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-window-close-o fa-4x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                              <div class="huge">{{ mitigated_count }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12 text-right">
+                          <div>Closed In Last 7 Days</div>
+                      </div>
+                    </div>
+                </div>
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'closed_findings' %}?mitigated=2&o=-mitigated">
+                {% else %}
+                    <a href="{% url 'closed_findings' %}?mitigated=2&mitigated_by={{ request.user.id }}&o=-mitigated">
+                {% endif %}
+                    <div class="panel-footer" style="background-color:#292926; color:#ffffff;">
+                        <span class="pull-left">View Finding Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading" style = "background-color:#ce7e0f;">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-check-square-o fa-4x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ accepted_count }}</div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12 text-right">
+                          <div>Risk Accepted In Last 7 Days</div>
+                      </div>
+                    </div>
+                </div>
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'accepted_findings' %}?test__engagement__risk_acceptance__created=2">
+                {% else %}
+                    <a href="{% url 'accepted_findings' %}?test__engagement__risk_acceptance__created=2&test__engagement__risk_acceptance__reporter={{ request.user.id }}">
+                {% endif %}
+                    <div class="panel-footer" style="background-color:#292926; color:#ffffff;">
+                        <span class="pull-left">View Finding Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row graphContainer">
+
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="color: #ffffff;background-color: #455263;">
+                    Historical Finding Severity
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body" style="background-color: #c7c9cc;">
+                    <div class="chart" id="donut-chart"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="color: #ffffff;background-color: #455263;">
+                    Reported Finding Severity by Month
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body" style="background-color: #c7c9cc;">
+                    <div class="chart" id="line-chart"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-6 -->
+    </div>
+<div class="row" ">
+    {% if top_five_products %}
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="color: #ffffff;background-color: #455263;">
+                    Top 5 Products By Vulnerabilities
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body" style="background-color: #c7c9cc;">
+                    <div id="top-five" class="graph"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+    {% endif %}
+
+      <div class="col-lg-6">
+          <div class="panel panel-default">
+              <div class="panel-heading" style="color: #ffffff;background-color: #455263;">
+                CVE by Vulnerabilities
+              </div>
+              <div class="panel-body" style="background-color: #c7c9cc;">
+                <div class="chart" id="donut-chart1"></div></div>
+         </div>
+      </div>
+</div>
+
+<div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="color: #ffffff;background-color: #455263;">
+                    SLA Days by Severity
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body" style="background-color: #c7c9cc;">
+                    <div id="sla" class="graph"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+
+      <div class="col-lg-6">
+          <div class="panel panel-default">
+              <div class="panel-heading" style="color: #ffffff;background-color: #455263;">
+                ###
+              </div>
+              <div class="panel-body" style="background-color:#aed5fc"></div>
+         </div>
+      </div>
+</div>
+
+
+<div class="row" ">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="color: #ffffff;background-color: #455263;">
+                    Unassigned Answered Engagement Questionnaires
+                </div>
+                <div class="panel-body" style="background-color: #c7c9cc;">
+                    {% if surveys %}
+                         <table id="surveys" class="tablesorter-bootstrap table table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Product</th>
+                                    <th>Engagement</th>
+                                    <th>Responder</th>
+                                    <th>Status</th>
+                                    <th>Completion Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            {% for survey in surveys %}
+                                <tr>
+                                    <td>
+                                        {% if survey.engagement %}
+                                            <a href="/engagement/{{ survey.engagement.id }}/questionnaire/{{ survey.id }}">{{ survey.survey.name }}</a>
+                                        {% else %}
+                                            <a href="/empty_questionnaire/{{ survey.id }}">{{ survey.survey.name }}</a>
+                                        {% endif %}
+                                    </td>
+                                    <td><a href="/product/{{ survey.engagement.product_id }}">{{ survey.engagement.product.name }}</a></td>
+                                    <td>
+                                        <a href="/engagement/{{ survey.engagement.id }}">{{ survey.engagement.name }}</a>
+                                    </td>
+                                    <td>
+                                        {% if survey.responder %}
+                                            {{ survey.responder }}
+                                        {% else %}
+                                            Anonymous
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if survey.completed %}
+                                            <span class="pass_fail Pass">Completed</span>
+                                        {% else %}
+                                            <span class="pass_fail">Unanswered</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ survey.answered_on }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            {% if survey.engagement %}
+                                                <a class="btn btn-sm btn-primary"
+                                                href="/engagement/{{ survey.engagement.id }}/questionnaire/{{ survey.id }}"> View Responses </a>
+                                                <a class="btn btn-sm btn-info"
+                                                href="/engagement/{{ survey.engagement.id }}/questionnaire/{{ survey.id }}/assign"> Assign User </a>
+                                            {% else %}
+                                                <a class="btn btn-sm btn-primary"
+                                                href="/empty_questionnaire/{{ survey.id }}"> View Responses </a>
+                                                <a class="btn btn-sm btn-success" href="empty_questionnaire/{{ survey.id }}/new_engagement">Create Engagement</a>
+                                                <button class="btn btn-sm btn-info" disabled
+                                                href="/engagement/{{ survey.engagement.id }}/questionnaire/{{ survey.id }}/assign"> Assign User </button>
+                                            {% endif %}
+                                        </div>
+                                    </td >
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <div class="panel-body" style="background-color: #c7c9cc;">
+                            <p>No questionnaires found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" col-xs-12">
+        {% if punchcard %}
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="color: #ffffff;background-color: #455263;">
+                        Weekly activity, displayed by day, of findings you reported.*
+                    </div>
+                    <div class="panel-body" style="background-color: #c7c9cc;">
+                        <div class="chart" id="punchcard"></div>
+                        <p class="text-center text-muted small">Week begins on date displayed.</p>
+                        <p>
+                            <br/>
+                             <span class="text-muted small">* Weeks are only displayed if findings are available.</span>
+                        </p>
+                    </div>
+                </div>
+          </div>
+      {% endif %}
+   </div>
+  </page>
+{% endblock %}
+{% block postscript %}
+    <!-- Flot Charts JavaScript -->
+    <script src="{% static "flot/excanvas.min.js" %}"></script>
+    <script src="{% static "flot/jquery.flot.js" %}"></script>
+    <script src="{% static "flot/jquery.flot.pie.js" %}"></script>
+    <script src="{% static "flot/jquery.flot.time.js" %}"></script>
+    <script src="{% static "jquery.flot.tooltip/js/jquery.flot.tooltip.min.js" %}"></script>
+    <script src="{% static "flot/jquery.flot.stack.js" %}"></script>
+    <script src="{% static "flot/jquery.flot.resize.js" %}"></script>
+    {% if punchcard %}
+        <script src="{% static "JUMFlot/javascripts/JUMFlot.min.js" %}"></script>
+        <script src="{% static "JUMFlot/javascripts/jquery.flot.mouse.js" %}"></script>
+        <script src="{% static "JUMFlot/javascripts/jquery.flot.bubbles.js" %}"></script>
+    {% endif %}
+    <script>
+        $(function () {
+            var options = {
+                xaxes: [{
+                    mode: 'time'
+                }],
+                yaxes: [{
+                    min: 0
+                }],
+                series: {
+                    lines: {
+                        show: true
+                    },
+                    points: {
+                        show: true
+                    }
+                },
+                grid: {
+                    hoverable: true,
+                    borderWidth: 1,
+                    borderColor: '#e7e7e7',
+
+                },
+                tooltip: true,
+            };
+            chart_div();
+            severity_pie();
+            top_five_products();
+            all_cve();
+
+            function all_cve() {
+                var data = [{
+                    label: "Critical",
+                    color: "#d9534f",
+                    data: {{critical_cve}}
+                }, {
+                    label: "High",
+                    color: "#f5a533",
+                    data: {{high_cve}}
+                }, {
+                    label: "Medium",
+                    color: "#f0de28",
+                    data: {{medium_cve}}
+                }, {
+                    label: "Low",
+                    color: "#327d06",
+                    data: {{low_cve}}
+                }, {
+                    label: "Informational",
+                    color: "#225ac9",
+                    data: {{info_cve}}
+                }];
+
+                var plotObj = $.plot($("#donut-chart1"), data, {
+                    series: {
+                        pie: {
+                            innerRadius: 0.5,
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: false,
+                                radius: 2 / 3,
+                                formatter: function (label, series) {
+                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;z-index:9999;">' + label + '<br/>' + series.data[0][1] + '</div>';
+
+                                },
+
+                            }
+                        }
+                    },
+                    grid: {
+                        hoverable: true,
+                    },
+                    legend: {
+                        backgroundColor: "#c7c9cc",
+                    },
+                    tooltip:true,
+                    tooltipOpts: {
+                        content: function(label, xval, yval, flotItem) {
+                            return label+"<br>"+yval
+                        }
+                    }
+                });
+            }
+
+            function top_five_products() {
+                var critical = [];
+                var high = [];
+                var medium = [];
+                var low = [];
+                var info = [];
+                var ticks = []
+                {% for t in top_five_products %}
+                    ttp = {{forloop.counter}};
+                    ticks.push([ttp, "{{t.name}}"]);
+                    critical.push([ttp, {{t.critical|default_if_none:0}}]);
+                    high.push([ttp, {{t.high|default_if_none:0}}]);
+                    medium.push([ttp, {{t.medium|default_if_none:0}}]);
+                    low.push([ttp, {{t.low|default_if_none:0}}]);
+                    info.push([ttp, {{t.info|default_if_none:0}}]);
+                {% endfor %}
+
+                data1 = [
+                    {
+                        data: critical,
+                        color: "#d9534f",
+                        bars: {fill: 1},
+                        label: 'Critical',
+                    },
+                    {
+                        data: high,
+                        color: "#f5a533",
+                        bars: {fill: 1},
+                        label: 'High',
+
+                    },
+                    {
+                        data: medium,
+                        color: "#f0de28",
+                        bars: {fill: 1},
+                        label: 'Medium',
+                    },
+                    {
+                        data: low,
+                        color: "#327d06",
+                        bars: {fill: 1},
+                        label: 'Low',
+                    },
+                    {
+                        data: info,
+                        color: "#225ac9",
+                        bars: {fill: 1},
+                        label: "Informational",
+                    },
+                ];
+
+                $.plot("#top-five", data1, {
+                    series: {
+                        stack: true,
+                        bars: {
+                            show: true,
+                            barWidth: .9,
+                            'align': "center",
+                        },
+
+                    },
+                    grid: {
+                        hoverable: false,
+                        borderWidth: 1,
+                        borderColor: '#e7e7e7',
+
+                    },
+                    tooltipOpt:true,
+                    legend: {
+                        position: "ne",
+                        backgroundColor: "#c7c9cc",
+                    },
+                    xaxis: {
+                        ticks: ticks,
+                    },
+                });
+            }
+
+            function chart_div() {
+                var critical = [],
+                        high = [],
+                        medium = [],
+                        low = [];
+
+                {% for month in by_month %}
+                    month = {{month|safe}};
+                    ttp = new Date(month['y'] + '-01').getTime();
+                    critical.push([ttp, month['a']]);
+                    high.push([ttp, month['b']]);
+                    medium.push([ttp, month['c']]);
+                    low.push([ttp, month['d']]);
+                {% endfor %}
+
+
+                var plotObj = $.plot($("#line-chart"), [{
+                            data: critical,
+                            label: " Critical",
+                            color: "#d9534f",
+                        }, {
+                            data: high,
+                            label: " High",
+                            color: '#f5a533',
+                        }, {
+                            data: medium,
+                            label: " Medium",
+                            color: '#f0de28',
+                        }, {
+                            data: low,
+                            label: " Low",
+                            color: '#327d06',
+                        }],
+                        options
+                      );
+            }
+
+            function severity_pie() {
+                var data = [{
+                    label: "Critical",
+                    color: "#d9534f",
+                    data: {{critical}}
+                }, {
+                    label: "High",
+                    color: "#f5a533",
+                    data: {{high}}
+                }, {
+                    label: "Medium",
+                    color: "#f0de28",
+                    data: {{medium}}
+                }, {
+                    label: "Low",
+                    color: "#327d06",
+                    data: {{low}}
+                }, {
+                    label: "Informational",
+                    color: "#225ac9",
+                    data: {{info}}
+                }];
+
+                var plotObj = $.plot($("#donut-chart"), data, {
+                    series: {
+                        pie: {
+                            innerRadius: 0.5,
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: false,
+                                radius: 2 / 3,
+                                formatter: function (label, series) {
+                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;z-index:9999;">' + label + '<br/>' + series.data[0][1] + '</div>';
+
+                                },
+
+                            }
+                        }
+                    },
+                    grid: {
+                        hoverable: true,
+                    },
+                    legend: {
+                        backgroundColor: "#c7c9cc",
+                    },
+                    tooltip:true,
+                    tooltipOpts: {
+                        content: function(label, xval, yval, flotItem) {
+                            return label+"<br>"+yval
+                        }
+                    }
+                });
+            }
+
+            {%  if punchcard %}
+
+                punchcard("#punchcard", {{ punchcard|safe }}, {{ ticks|safe }});
+
+            {%  endif %}
+
+        });
+
+    </script>
+{% endblock %}
